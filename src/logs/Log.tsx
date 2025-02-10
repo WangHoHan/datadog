@@ -18,6 +18,7 @@ export const Log = ({
   );
 
   useEffect(() => {
+    // We can add intersection observer to check if it is in view
     if (logImpression) {
       console.log("logImpression", combinedProps);
       logger.sendLog("Impression", combinedProps);
