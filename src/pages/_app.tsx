@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 // Note: it is recommended to use a matching version with RUM SDK if used.
 import { datadogLogs } from "@datadog/browser-logs";
+import { LoggerContextProvider } from "@/logs/Logger.context";
+import { Logger } from "@/logs/Logger";
 
 datadogLogs.init({
   clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN!,
@@ -11,6 +13,12 @@ datadogLogs.init({
   forwardConsoleLogs: "all",
 });
 
+const logger = new Logger();
+
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <LoggerContextProvider value={logger}>
+      <Component {...pageProps} />
+    </LoggerContextProvider>
+  );
 }
