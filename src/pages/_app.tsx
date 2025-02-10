@@ -8,6 +8,7 @@ datadogLogs.init({
   site: "datadoghq.eu",
   forwardErrorsToLogs: true,
   sessionSampleRate: 100,
+  forwardConsoleLogs: "all",
 });
 
 export default function App({ Component, pageProps }: AppProps) {

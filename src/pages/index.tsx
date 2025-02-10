@@ -2,10 +2,34 @@ import { datadogLogs } from "@datadog/browser-logs";
 
 export default function Home() {
   return (
-    <button
-      onClick={() => datadogLogs.logger.info("Test", { name: "name", id: 123 })}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+      }}
     >
-      Send log
-    </button>
+      <button
+        onClick={() => {
+          datadogLogs.logger.info("Test", { name: "name", id: 123 });
+        }}
+      >
+        Send log
+      </button>
+      <button
+        onClick={() => {
+          console.log("Datadog console log");
+        }}
+      >
+        Send console.log
+      </button>
+      <button
+        onClick={() => {
+          console.error("Datadog console error");
+        }}
+      >
+        Send console.error
+      </button>
+    </div>
   );
 }
