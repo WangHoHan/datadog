@@ -30,6 +30,13 @@ export default function Home() {
       >
         Send console.error
       </button>
+      <button
+        onClick={() => {
+          throw new Error("Datadog uncaught exception");
+        }}
+      >
+        Datadog uncaught exception
+      </button>
     </div>
   );
 }
