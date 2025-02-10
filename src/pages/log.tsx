@@ -1,12 +1,13 @@
 import { Log } from "@/logs/Log";
 import { LogEvent } from "@/logs/LogEvent";
-import { PropsWithChildren } from "react";
+import { HTMLAttributes, PropsWithChildren } from "react";
 
 interface ButtonProps {
   logEventProps: object;
-  onClick: () => void;
+  onClick: HTMLAttributes<HTMLButtonElement>["onClick"];
 }
 
+// We can create HOF withLogEvent
 const Button = ({
   children,
   logEventProps,
@@ -14,8 +15,7 @@ const Button = ({
 }: PropsWithChildren<ButtonProps>) => (
   <LogEvent
     actionProps={{ onClick: { action: "click" } }}
-    elementType="button"
-    logEventProps={logEventProps}
+    logEventProps={{ elementType: "button", ...logEventProps }}
   >
     <button onClick={onClick}>{children}</button>
   </LogEvent>
@@ -31,7 +31,9 @@ export default function LogPage() {
             logEventProps={{
               elementName: "call-to-action-button",
             }}
-            onClick={() => {}}
+            onClick={(e) => {
+              console.log(e);
+            }}
           >
             Call to action
           </Button>

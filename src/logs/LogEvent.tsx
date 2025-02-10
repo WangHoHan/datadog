@@ -8,26 +8,26 @@ import {
 import { useLogContext } from "./Log.context";
 import { Log } from "./Log";
 import { useLoggerContext } from "./Logger.context";
+import { Logger } from "./Logger";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getEventHandlers(
-  child: ReactElement,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  child: ReactElement<any>,
   consumedProps: object,
-  actionProps: any,
+  actionProps: Record<string, object>,
   logger: Logger,
 ) {
-  const eventHandlers = {};
+  const eventHandlers: Record<string, object> = {};
 
   Object.entries(actionProps).forEach(([eventHandlerName, handlerProps]) => {
-    eventHandlers[eventHandlerName] = (...args) => {
-      // Call the original event handler if it exists
+    eventHandlers[eventHandlerName] = (...args: unknown[]) => {
       if (child.props[eventHandlerName]) {
         child.props[eventHandlerName](...args);
       }
 
       // Log the event with merged properties
       console.log({ ...consumedProps, ...handlerProps });
-      logger.sendLog({ ...consumedProps, ...handlerProps });
+      logger.sendLog("", { ...consumedProps, ...handlerProps });
     };
   });
 
@@ -35,8 +35,7 @@ function getEventHandlers(
 }
 
 interface LogEventChildrenProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actionProps: any;
+  actionProps: Record<string, object>;
 }
 
 const LogEventChildren = ({
@@ -59,17 +58,13 @@ const LogEventChildren = ({
 };
 
 interface LogEventProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actionProps: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  elementType: any;
+  actionProps: Record<string, object>;
   logEventProps: object;
 }
 
 export const LogEvent = ({
   children,
   actionProps,
-  elementType,
   logEventProps,
 }: PropsWithChildren<LogEventProps>) => {
   if (!logEventProps || !actionProps) {
@@ -77,7 +72,7 @@ export const LogEvent = ({
   }
 
   return (
-    <Log elementType={elementType} {...logEventProps}>
+    <Log {...logEventProps}>
       <LogEventChildren actionProps={actionProps}>{children}</LogEventChildren>
     </Log>
   );
